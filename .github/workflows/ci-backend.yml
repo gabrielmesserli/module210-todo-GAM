@@ -1,0 +1,31 @@
+name: Build and push Docker image to registry
+
+on:
+  push:
+    branches:
+      - main  # Déclenchement sur push vers main
+
+env:
+  REG_NAME: "exo.container-registry.com" # Nom du registre
+  IMAGE_NAME: "todo-app" # Nom de l'image
+  TAG: "latest"
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Log in to Container Registry
+        run: |
+          echo "${{ secrets.REGISTRY_PASSWORD }}" | docker login ${{ env.REG_NAME }} -u ${{ secrets.REGISTRY_USERNAME }} --password-stdin
+
+      - name: Build Docker image
+        run: |
+          docker build -t ${{ env.REG_NAME }}/${{ env.IMAGE_NAME }}:${{ env.TAG }} .
+
+      - name: Push Docker image to registry
+        run: |
+          docker push ${{ env.REG_NAME }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}
