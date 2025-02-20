@@ -18,10 +18,11 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Log in to container registry
-        run: echo "${{ secrets.C4cG4FfJBBpe4cWHSZ5HjgXWFR4wa7wU  }}" | docker login ${{ env.exo.container-registry.com }} -u "${{ secrets.quentin.badoud@edufr.ch }}" --password-stdin
+        run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ${{ env.REG_NAME }} -u "${{ github.actor }}" --password-stdin
 
       - name: Build Docker image
-        run: docker build -t ${{ env.exo.container-registry.com }}/${{ env.todo-app }}:latest .
+        run: docker build -t ${{ env.REG_NAME }}/${{ env.IMAGE_NAME }}:latest .
 
       - name: Push Docker image to registry
-        run: docker push ${{ env.exo.container-registry.com }}/${{ env.todo-app }}:latest
+        run: docker push ${{ env.REG_NAME }}/${{ env.IMAGE_NAME }}:latest
+
