@@ -6,7 +6,7 @@ on:
       - main  # Déclenchement lorsque le code est poussé sur main
 
 env:
-  REG_NAME: "exo.container-registry.com"
+  REG_NAME: "ghcr.io"
   IMAGE_NAME: "todo-app"
 
 jobs:
@@ -17,12 +17,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Log in to container registry
-        run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ${{ env.REG_NAME }} -u "${{ quentin.badoud@edufr.ch }}" --password-stdin
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
 
       - name: Build Docker image
-        run: docker build -t ${{ env.REG_NAME }}/${{ env.IMAGE_NAME }}:latest .
+        run: docker build -t ${{ env.REG_NAME }}/${{ github.repository }}:${{ env.IMAGE_NAME }} .
 
       - name: Push Docker image to registry
-        run: docker push ${{ env.REG_NAME }}/${{ env.IMAGE_NAME }}:latest
-
+        run: docker push ${{ env.REG_NAME }}/${{ github.repository }}:${{ env.IMAGE_NAME }} 
