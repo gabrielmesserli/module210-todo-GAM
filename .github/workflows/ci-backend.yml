@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Log in to container registry
-        run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ${{ env.REG_NAME }} -u "${{ github.actor }}" --password-stdin
+        run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ${{ env.REG_NAME }} -u "${{ quentin.badoud@edufr.ch }}" --password-stdin
 
       - name: Build Docker image
         run: docker build -t ${{ env.REG_NAME }}/${{ env.IMAGE_NAME }}:latest .
