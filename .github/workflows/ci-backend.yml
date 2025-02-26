@@ -3,26 +3,29 @@ name: Build and save my Docker image to a registry
 on:
   push:
     branches:
-      - main  # Déclenchement lorsque le code est poussé sur main
+      - main  # Déclenchement lorsque le code est poussé sur la branche main
 
 env:
-  REG_NAME: "ghcr.io"
-  IMAGE_NAME: "todo-app"
+  REG_NAME: "exo.container-registry.com"  # Remplacez par le nom de votre registre sans "azurecr.io"
+  IMAGE_NAME: "todo-app"  # Nom de votre image dans le registre
 
 jobs:
   build-and-push:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Utilisation de l'environnement Ubuntu pour les jobs
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3  # Checkout du repository pour accéder au code source
 
-      - name: Log in to GitHub Container Registry
-        run: echo "${{ secrets.GHCR_ACCESS_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+      # 🔹 Authentification avec le registre Docker
+      - name: Log in to Docker registry
+        run: echo "${{ secrets.REGISTRY_PASSWORD }}" | docker login ${{ env.REG_NAME }} -u "${{ secrets.REGISTRY_USERNAME }}" --password-stdin
 
+      # 🔹 Build de l'image Docker
       - name: Build Docker image
-        run: docker build -t ${{ env.REG_NAME }}/${{ github.repository }}:${{ env.IMAGE_NAME }} .
+        run: docker build -t ${{ env.REG_NAME }}/${{ env.IMAGE_NAME }}:latest .
 
+      # 🔹 Push de l'image Docker vers le registre
       - name: Push Docker image to registry
-        run: docker push ${{ env.REG_NAME }}/${{ github.repository }}:${{ env.IMAGE_NAME }}
+        run: docker push ${{ env.REG_NAME }}/${{ env.IMAGE_NAME }}:latest
 
