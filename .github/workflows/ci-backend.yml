@@ -6,7 +6,7 @@ on:
       - main  # Déclenchement lorsque le code est poussé sur la branche main
 
 env:
-  REG_NAME: "exo.container-registry.com"  # Remplacez par le nom de votre registre sans "azurecr.io"
+  REG_NAME: "exo.container-registry.com/c213-emf/REPOSITORY"  # Remplacez par le nom de votre registre sans "azurecr.io"
   IMAGE_NAME: "todo-app"  # Nom de votre image dans le registre
 
 jobs:
@@ -28,4 +28,3 @@ jobs:
       # 🔹 Push de l'image Docker vers le registre
       - name: Push Docker image to registry
         run: docker push ${{ env.REG_NAME }}/${{ env.IMAGE_NAME }}:latest
-
