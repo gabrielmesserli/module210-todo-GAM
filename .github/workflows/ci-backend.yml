@@ -23,8 +23,13 @@ jobs:
 
       # 🔹 Build de l'image Docker
       - name: Build Docker image
-        run: docker build -t ${{ env.REG_NAME }}/${{ env.IMAGE_NAME }}:latest .
+  run: docker build -t ${{ env.REG_NAME }}/${{ env.IMAGE_NAME }}:latest -f D:\210 GM\New Code\module210-todo-GAM\src\backend\Dockerfile
+
 
       # 🔹 Push de l'image Docker vers le registre
       - name: Push Docker image to registry
         run: docker push ${{ env.REG_NAME }}/${{ env.IMAGE_NAME }}:latest
+
+
+
+D:\210 GM\New Code\module210-todo-GAM\src\backend\Dockerfile
