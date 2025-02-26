@@ -6,7 +6,7 @@ on:
       - main  # Déclenchement lorsque le code est poussé sur la branche main
 
 env:
-  REG_NAME: "exo.container-registry.com/c213-emf/REPOSITORY"  # Remplacez par le nom de votre registre sans "azurecr.io"
+  REG_NAME: "exo.container-registry.com/c213-emf"  # Remplacez par le nom de votre registre sans "azurecr.io"
   IMAGE_NAME: "todo-app"  # Nom de votre image dans le registre
 
 jobs:
