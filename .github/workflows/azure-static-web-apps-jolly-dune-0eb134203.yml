@@ -22,8 +22,18 @@ jobs:
         with:
           submodules: true
           lfs: false
+
+      # 🔹 Ajout de l'authentification à GitHub Container Registry (GHCR)
+      - name: Log in to GitHub Container Registry
+        env:
+          REGISTRY: ghcr.io
+          GHCR_USERNAME: ${{ github.actor }}
+          GHCR_TOKEN: ${{ secrets.GHCR_ACCESS_TOKEN }}
+        run: echo "${{ secrets.GHCR_ACCESS_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+
       - name: Install OIDC Client from Core Package
         run: npm install @actions/core@1.6.0 @actions/http-client
+
       - name: Get Id Token
         uses: actions/github-script@v6
         id: idtoken
@@ -32,14 +42,16 @@ jobs:
                const coredemo = require('@actions/core')
                return await coredemo.getIDToken()
            result-encoding: string
+
       - name: Index check
         run: |
           if [ -f "./src/frontend/index.html" ]; then
             echo "Le fichier index.html existe" 
           else
-            echo “Erreur : index.html n’existe pas!”
+            echo "Erreur : index.html n’existe pas!"
             exit 1
           fi
+
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
